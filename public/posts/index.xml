@@ -5,15 +5,15 @@
     <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on My New Hugo Site</description>
     <generator>Hugo</generator>
-    <language>en-us</language>
+    <language>en-gb</language>
     <lastBuildDate>Mon, 06 Jan 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hello World</title>
-      <link>http://localhost:1313/posts/hello-world/</link>
+      <link>http://localhost:1313/posts/post1/</link>
       <pubDate>Mon, 06 Jan 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/hello-world/</guid>
-      <description>&lt;p&gt;Hello world.&lt;/p&gt;&#xA;&lt;h1 id=&#34;heading&#34;&gt;Heading&lt;/h1&gt;&#xA;&lt;p&gt;This is the text body&lt;/p&gt;</description>
+      <guid>http://localhost:1313/posts/post1/</guid>
+      <description>&lt;p&gt;Hello world.&lt;/p&gt;&#xA;&lt;h1 id=&#34;heading&#34;&gt;Heading&lt;/h1&gt;&#xA;&lt;p&gt;This is the text body&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;images/avatar.jpg&#34; alt=&#34;alt-text&#34;&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

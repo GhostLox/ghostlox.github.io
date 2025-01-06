@@ -15,3 +15,5 @@ Hello world.
 # Heading
 
 This is the text body
+
+![alt-text](images/avatar.jpg)
