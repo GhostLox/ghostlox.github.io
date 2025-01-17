@@ -91,7 +91,7 @@ We can see three available TCP services: FTP, SSH and HTTP.
 
 Starting off with the low-hanging fruit, whilst waiting for the all ports results to return, we quickly try the ftp anonymous user. Unfortunately, no luck there.
 
-![FTP Anonymous Login Failed](../images/screenshot-2025-01-02_20-41-26.png)
+![FTP Anonymous Login Failed](images/screenshot-2025-01-02_20-41-26.png)
 
 ## Probing HTTP
 
@@ -99,22 +99,22 @@ Leaving SSH for later as brute-force password attacks are almost always a last r
 
 The HTTP service was running an IT admin page offering services for SQLPad, Froxlor and Database & Server Management. 
 
-![HTTP Splash Page](../images/screenshot-2025-01-02_20-37-45.png)
+![HTTP Splash Page](images/screenshot-2025-01-02_20-37-45.png)
 
 In the background, `feroxbuster` was used for directory enumeration to discover any subdomains, directories or files - various wordlists were used in combination with `gobuster`, nothing of particular interest was found.
 
 In order of what's displayed, SQLPad was first investigated. After taking a look around to see if we could potentially exploit some SQLi attacks, we decide to take a look at the service information at the top right. This presented us with a Version Disclosure 'vulnerability'. 
 
-![SQLPad Version Disclosure](../images/Screenshot-sqlpadversion.png)
+![SQLPad Version Disclosure](images/Screenshot-sqlpadversion.png)
 
 After some quick Google Dorking for SQLPad 6.10 vulnerabilities, we find a Github page with a CVE affecting this version. 
 
-![SQLPad CVE](../images/screenshot-2025-01-02_21-16-49.png)
+![SQLPad CVE](images/screenshot-2025-01-02_21-16-49.png)
 
 
 We download this bash script, make it executable (`chmod +x ./exploit.sh`), pipe in our target IP/FQDN, and listener. We have a remote shell!
 
-![Docker Foothold](../images/Dockerfoothold.png)
+![Docker Foothold](images/Dockerfoothold.png)
 *My windows may aswell be in different post codes, you may have to squint/zoom.*
 
 
@@ -128,11 +128,11 @@ The `/etc/shadow` file seems interesting. It contains two hashes for users `Mich
 
 [erev0s](https://erev0s.com/blog/cracking-etcshadow-john/) provides a useful guide for unshadowing files using the passwd and shadow files on a system with John The Ripper.
 
-![Unshadow Crackig with John](../images/CrackingJohn.png)
+![Unshadow Crackig with John](images/CrackingJohn.png)
 
 Unfortunately, sometimes you need to know when to give up. After waiting an uncomfortable amount of time, switching the wordlist to `rockyou.txt` seemed to have struck some luck. 
 
-![John Cracked/Unshadowed Credentials](../images/JohnCracked.png)
+![John Cracked/Unshadowed Credentials](images/JohnCracked.png)
 
 > [GhostLox]: *I will forever be grateful to the contributor who made the credentials highlighted in colour (whether that's Zsh and/or John).*
 
@@ -140,7 +140,7 @@ Unfortunately, sometimes you need to know when to give up. After waiting an unco
 
 The Michael credentials unshadowed login to the SSH service. The user flag can be found in Michael's home directory.
 
-![Catting User Flag.txt](../images/Userflag.png)
+![Catting User Flag.txt](images/Userflag.png)
 
 `linpeas.sh` is conveniently on the system which is typically used for privilege escalation vectors and some general automated enumeration of the system.
 
@@ -176,7 +176,7 @@ When a service is assigned to port 0, it essentially chooses a random unused por
 
 Taking port 0 into consideration, we can refer back to a section of the Linpeas output titled "Active Ports". 
 
-![Target Active Ports](../images/activeports.png)
+![Target Active Ports](images/activeports.png)
 
 A few high numbered ports are listed - interesting. We can also use something like `netstat -tulpn` or `ss -tulpn` to get the same results. As these are hosted on the localhost system via the loopback address, unless you are routing traffic through this system, you will be unable to access those services (not routable beyond the host)
 
@@ -196,12 +196,12 @@ From here we can navigate to `chrome://inspect`, click 'Configure' and add the p
 
 Wait a moment as the cron script runs every 110 seconds. We should see something appear under "Remote Target" like: `Froxlor http://admin.sightless/htb:8080/index.php`. If we click on `index.php` quickly enough, the credentials to the Froxlor service are revealed in plaintext; as demonstrated below:
 
-![Frexlor Credentials Captured](../images/capturecreds.png)
+![Frexlor Credentials Captured](images/capturecreds.png)
 
 # Gaining Root Access
 
 Taking a look around the interface, there appears to be a nice and convenient command injection option under "PHP > PHP-FPM versions". Modifying the `php-fpm restart command` to copy the root `id_rsa` key to an accessible directory like `/tmp`, gaining a reverse shell, or directly catting the root.txt flag should pwn this system.
 
-![Rooted system](../images/rooted.png)
+![Rooted system](images/rooted.png)
 
 🎉 System Pwned!
