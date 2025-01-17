@@ -11,7 +11,7 @@ draft: "false"
 showTableOfContents: true
 ---
 
-![Pentest-Overview](../images/Sightless-ptprocess.png)
+![Pentest-Overview](images/Sightless-ptprocess.png)
 
 # Summary
 
